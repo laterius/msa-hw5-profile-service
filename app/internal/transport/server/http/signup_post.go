@@ -28,11 +28,11 @@ func (h *signUpPostHandler) Handle() fiber.Handler {
 			return fail(ctx, err)
 		}
 
-		ctx.Cookie(&fiber.Cookie{
-			Name:     "remember_token",
-			Value:    user.Remember,
-			HTTPOnly: true,
-		})
+		//ctx.Cookie(&fiber.Cookie{
+		//	Name:     "remember_token",
+		//	Value:    user.Remember,
+		//	HTTPOnly: true,
+		//})
 
 		return created(ctx, (&service.User{}).FromDomain(user), int64(user.Id))
 	}
