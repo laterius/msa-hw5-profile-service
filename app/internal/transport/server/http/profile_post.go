@@ -3,6 +3,7 @@ package http
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/laterius/service_architecture_hw3/app/internal/service"
+	"net/http"
 )
 
 func NewPostProfile(r service.UserRememberReader, pu service.UserPartialUpdater) *postProfileHandler {
@@ -26,7 +27,12 @@ func (h *postProfileHandler) Handle() fiber.Handler {
 			return fail(ctx, err)
 		}
 
-		currentUser, err := h.reader.ByRemember(u.Remember.Value)
+		rememberToken := ctx.Cookies("remember_token")
+		if rememberToken == "" {
+			return ctx.SendStatus(http.StatusUnauthorized)
+		}
+
+		currentUser, err := h.reader.ByRemember(rememberToken)
 		if err != nil {
 			return fail(ctx, err)
 		}

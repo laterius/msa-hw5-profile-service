@@ -103,7 +103,6 @@ type UserPartialUpdate struct {
 	LastName  nullable.String `json:"lastName"`
 	Email     nullable.String `json:"email"`
 	Phone     nullable.String `json:"phone"`
-	Remember  nullable.String `json:"token"`
 }
 
 func (pu UserPartialUpdate) ToDomain() *domain.UserPartialData {
@@ -122,10 +121,6 @@ func (pu UserPartialUpdate) ToDomain() *domain.UserPartialData {
 	}
 	if pu.Phone.Set {
 		d.Set("phone", pu.Phone.Value)
-	}
-
-	if pu.Remember.Set {
-		d.Set("password", pu.Remember.Value)
 	}
 
 	return d
