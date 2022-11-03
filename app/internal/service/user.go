@@ -107,8 +107,8 @@ type UserPartialUpdate struct {
 func (pu UserPartialUpdate) ToDomain() *domain.UserPartialData {
 	d := types.NewKv()
 	d.Set("username", pu.Username)
-	d.Set("firstName", pu.FirstName)
-	d.Set("lastName", pu.LastName)
+	d.Set("first_name", pu.FirstName)
+	d.Set("last_name", pu.LastName)
 	d.Set("email", pu.Email)
 	d.Set("phone", pu.Phone)
 
