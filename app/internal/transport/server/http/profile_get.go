@@ -27,8 +27,8 @@ func (h *getProfileHandler) Handle() fiber.Handler {
 			return fail(ctx, err)
 		}
 
-		rememberToken, ok := ctx.GetReqHeaders()["remember_token"]
-		if ok != true {
+		rememberToken := ctx.Cookies("remember_token")
+		if rememberToken == "" {
 			return ctx.SendStatus(http.StatusUnauthorized)
 		}
 
