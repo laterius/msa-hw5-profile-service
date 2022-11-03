@@ -48,7 +48,6 @@ func (h *postProfileHandler) Handle() fiber.Handler {
 			"Username":  updatedUser.Username,
 			"Phone":     updatedUser.Phone,
 			"Email":     updatedUser.Email,
-			"Token":     updatedUser.Remember,
 		})
 	}
 }

@@ -1,8 +1,8 @@
 build:
-	docker build -f docker/Dockerfile . -t 34234247632/profile-service:v1.5
+	docker build -f docker/Dockerfile . -t 34234247632/profile-service:v1.6
 
 push:
-	docker push 34234247632/profile-service:v1.5
+	docker push 34234247632/profile-service:v1.6
 
 docker-start:
 	cd docker && docker-compose up -d

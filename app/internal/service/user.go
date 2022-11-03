@@ -8,7 +8,6 @@ import (
 	"github.com/laterius/service_architecture_hw3/app/internal/repo"
 	"github.com/laterius/service_architecture_hw3/app/modules/hash"
 	"github.com/laterius/service_architecture_hw3/app/modules/rand"
-	"github.com/laterius/service_architecture_hw3/app/pkg/nullable"
 	"github.com/laterius/service_architecture_hw3/app/pkg/types"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -98,30 +97,20 @@ func (u UserUpdate) ToDomain() *domain.User {
 }
 
 type UserPartialUpdate struct {
-	Username  nullable.String `json:"username"`
-	FirstName nullable.String `json:"firstName"`
-	LastName  nullable.String `json:"lastName"`
-	Email     nullable.String `json:"email"`
-	Phone     nullable.String `json:"phone"`
+	Username  string `json:"username" schema:"username"`
+	FirstName string `json:"firstName" schema:"firstName"`
+	LastName  string `json:"lastName" schema:"lastName"`
+	Email     string `json:"email" schema:"email"`
+	Phone     string `json:"phone" schema:"phone"`
 }
 
 func (pu UserPartialUpdate) ToDomain() *domain.UserPartialData {
 	d := types.NewKv()
-	if pu.Username.Set {
-		d.Set("username", pu.Username.Value)
-	}
-	if pu.FirstName.Set {
-		d.Set("firstName", pu.FirstName.Value)
-	}
-	if pu.LastName.Set {
-		d.Set("lastName", pu.LastName.Value)
-	}
-	if pu.Email.Set {
-		d.Set("email", pu.Email.Value)
-	}
-	if pu.Phone.Set {
-		d.Set("phone", pu.Phone.Value)
-	}
+	d.Set("username", pu.Username)
+	d.Set("firstName", pu.FirstName)
+	d.Set("lastName", pu.LastName)
+	d.Set("email", pu.Email)
+	d.Set("phone", pu.Phone)
 
 	return d
 }
