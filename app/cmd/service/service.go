@@ -47,7 +47,7 @@ func main() {
 	deleteUserHandler := transport.NewDeleteUser(userService)
 	getContactHandler := transport.GetContact()
 	getHomeHandler := transport.GetHomePage()
-	profileGet := transport.NewGetProfile(userService)
+	profileGet := transport.NewGetProfile(userService, userService)
 	profilePost := transport.NewPostProfile(userService, userService)
 	signUpGet := transport.SignUpGet()
 	signUpPost := transport.SignUpPost(userService)

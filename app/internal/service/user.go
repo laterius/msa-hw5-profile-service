@@ -245,7 +245,7 @@ func (s *userService) ByRemember(token string) (*domain.User, error) {
 		Remember: token,
 	}
 	// Validating and Normalizing then creating the hash
-	s.hmacRememberToken(&newuser)
+	s.HmacRememberToken(&newuser)
 
 	user, err := s.rememberReader.ByRemember(newuser.RememberHash)
 	//TODO надо протестировать, может лишнее
@@ -284,7 +284,7 @@ func (s *userService) Create(req *UserCreate) (*domain.User, error) {
 		return nil, err
 	}
 
-	err = s.hmacRememberToken(newUser)
+	err = s.HmacRememberToken(newUser)
 	if err != nil {
 		return nil, err
 	}
@@ -328,7 +328,7 @@ func (s *userService) signIn(user *domain.User) error {
 		}
 		user.Remember = token
 
-		s.hmacRememberToken(user)
+		s.HmacRememberToken(user)
 		_, err = s.updater.Update(user.Id, user)
 		if err != nil {
 			return err
@@ -353,7 +353,7 @@ func setRememberIfUnset(user *domain.User) error {
 }
 
 // Validating the RememberToken and hashing
-func (s *userService) hmacRememberToken(user *domain.User) error {
+func (s *userService) HmacRememberToken(user *domain.User) error {
 	if user.Remember == "" {
 		return nil
 	}

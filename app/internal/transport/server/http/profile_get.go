@@ -8,16 +8,16 @@ import (
 	"net/http"
 )
 
-func NewGetProfile(r service.UserReader) *getProfileHandler {
+func NewGetProfile(r service.UserReader, r2 service.UserRememberReader) *getProfileHandler {
 	return &getProfileHandler{
-
-		readerUser: r,
+		readerRemember: r2,
+		readerUser:     r,
 	}
 }
 
 type getProfileHandler struct {
-	//reader service.UserRememberReader
-	readerUser service.UserReader
+	readerRemember service.UserRememberReader
+	readerUser     service.UserReader
 }
 
 func (h *getProfileHandler) Handle() fiber.Handler {
@@ -28,30 +28,34 @@ func (h *getProfileHandler) Handle() fiber.Handler {
 		}
 
 		rememberToken := ctx.Cookies("remember_token")
-		//if rememberToken == "" {
-		//	return ctx.SendStatus(http.StatusUnauthorized)
-		//}
+		if rememberToken == "" {
+			return ctx.SendStatus(http.StatusUnauthorized)
+		}
+
+		currentUser, err := h.readerRemember.ByRemember(rememberToken)
+		if err != nil {
+			return fail(ctx, err)
+		}
 
 		user, err := h.readerUser.Get(domain.UserId(userId))
 		if err != nil {
 			return fail(ctx, err)
 		}
 
-		return ctx.SendString(fmt.Sprintf("user.Remember = %s, rememberToken = %s", user.Remember, rememberToken))
+		fmt.Printf("user.Remember = %s, rememberToken = %s, user.RememberHash = %s, user.Id = %s, currentUser.Id = %s",
+			user.Remember, rememberToken, user.RememberHash, user.Id, currentUser.Id)
 
-		if user.Remember == rememberToken {
+		if user.Id == currentUser.Id {
 			return ctx.Render("profile", fiber.Map{
 				"FirstName": user.FirstName,
 				"LastName":  user.LastName,
 				"Username":  user.Username,
 				"Phone":     user.Phone,
 				"Email":     user.Email,
-				"Token":     user.Remember,
+				"Token":     user.RememberHash,
 			})
 		}
 
 		return ctx.SendStatus(http.StatusForbidden)
-
-		//return json(ctx, (&service.User{}).FromDomain(user))
 	}
 }
