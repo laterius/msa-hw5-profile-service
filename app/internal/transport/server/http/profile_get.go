@@ -28,11 +28,10 @@ func (h *getProfileHandler) Handle() fiber.Handler {
 		}
 
 		rememberToken := ctx.Cookies("remember_token")
+		log.Println(rememberToken)
 		if rememberToken == "" {
 			return ctx.SendStatus(http.StatusUnauthorized)
 		}
-
-		log.Println(rememberToken)
 
 		user, err := h.readerUser.Get(domain.UserId(userId))
 		if err != nil {
