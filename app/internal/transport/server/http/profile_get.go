@@ -28,17 +28,16 @@ func (h *getProfileHandler) Handle() fiber.Handler {
 		}
 
 		rememberToken := ctx.Cookies("remember_token")
-		fmt.Println(rememberToken)
-		if rememberToken == "" {
-			return ctx.SendStatus(http.StatusUnauthorized)
-		}
+		//if rememberToken == "" {
+		//	return ctx.SendStatus(http.StatusUnauthorized)
+		//}
 
 		user, err := h.readerUser.Get(domain.UserId(userId))
 		if err != nil {
 			return fail(ctx, err)
 		}
 
-		fmt.Println(user.Remember)
+		return ctx.SendString(fmt.Sprintf("user.Remember = %s, rememberToken = %s", user.Remember, rememberToken))
 
 		if user.Remember == rememberToken {
 			return ctx.Render("profile", fiber.Map{
