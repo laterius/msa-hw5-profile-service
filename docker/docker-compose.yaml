@@ -1,3 +1,4 @@
+#TODO необходимо переписать на вызов сервиса profile
 version: '3'
 services:
   app:

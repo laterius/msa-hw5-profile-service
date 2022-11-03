@@ -78,8 +78,8 @@ func main() {
 	srv.Get("/signup", signUpGet.Handle())
 	srv.Post("/signup", signUpPost.Handle())
 	srv.Get("/", getHomeHandler.Handle())
-	srv.Get("/profile/:token", profileGet.Handle())
-	srv.Post("/profile/:id", profilePost.Handle())
+	srv.Get("/profile/:id", profileGet.Handle())
+	srv.Post("/profile", profilePost.Handle())
 
 	srv.All("/*", transport.DefaultResponse)
 
