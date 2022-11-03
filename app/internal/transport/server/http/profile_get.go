@@ -1,10 +1,10 @@
 package http
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/laterius/service_architecture_hw3/app/internal/domain"
 	"github.com/laterius/service_architecture_hw3/app/internal/service"
-	"log"
 	"net/http"
 )
 
@@ -28,7 +28,7 @@ func (h *getProfileHandler) Handle() fiber.Handler {
 		}
 
 		rememberToken := ctx.Cookies("remember_token")
-		log.Println(rememberToken)
+		fmt.Println(rememberToken)
 		if rememberToken == "" {
 			return ctx.SendStatus(http.StatusUnauthorized)
 		}
@@ -38,7 +38,7 @@ func (h *getProfileHandler) Handle() fiber.Handler {
 			return fail(ctx, err)
 		}
 
-		log.Println(user.Remember)
+		fmt.Println(user.Remember)
 
 		if user.Remember == rememberToken {
 			return ctx.Render("profile", fiber.Map{
